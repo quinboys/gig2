@@ -2,7 +2,7 @@ DROP DATABASE Data_Mart;
 CREATE DATABASE Data_Mart;
 USE Data_Mart;
 
-#ASLDASLD
+#asdasdasd
 
 create table Payment (
 	PaymentID INT,
