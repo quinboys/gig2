@@ -8,6 +8,7 @@ CREATE SQL SECURITY INVOKER VIEW SalesTemp
 			Sales.SaleID,
 			Sales.Total
 		FROM Sales
+        WHERE SaleDate BETWEEN '2018-05-00 00:00:00' AND '2040-00-00 00:00:00'
 		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m"); 
 
 SELECT * FROM SalesTemp;
@@ -18,8 +19,8 @@ CREATE SQL SECURITY INVOKER VIEW PercentageGrowth
 		SELECT 
 			DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month,
 			Sales.Total,
-			(CONCAT(ROUND((100 * (SELECT SalesTemp.Total FROM SalesTemp) / Sales.Total), 2), "%")) AS Growth
-		FROM Sales
+			CONCAT(ROUND((100 * (SELECT SalesTemp.Total FROM SalesTemp WHERE SalesTemp.Month > Sales.SaleDate) / Sales.Total), 2), "%") AS Growth
+		FROM Sales, SalesTemp
 		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m");
     
 SELECT * FROM PercentageGrowth;
