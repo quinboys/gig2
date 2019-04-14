@@ -2,15 +2,21 @@
 
 #SELECT Total FROM Sales prev WHERE prev.Total < Total)
 
-#DROP VIEW PercentageGrowth;
+CREATE TABLE IF NOT EXISTS SalesTemp LIKE Sales;
+	INSERT SalesTemp
+	SELECT *
+	FROM Sales;
+
+DROP VIEW IF EXISTS PercentageGrowth;
 CREATE VIEW PercentageGrowth 
 AS
-	SELECT 
+     SELECT 
 		DATE_FORMAT(Sales.SaleDate, "%Y-%m") as Month,
         Sales.Total,
-		CONCAT((COUNT(Sales.Total) / (COUNT(Sales.Total-1))), "%") AS Growth
+		(CONCAT(ROUND((100 * Sales.Total / (SELECT SalesTemp.Total FROM SalesTemp WHERE SalesTemp.SaleID = 2)), 2), "%")) AS Growth
 	FROM Sales
     GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m");
-      
-      
+    
+DROP TABLE SalesTemp;
+    
 SELECT * FROM PercentageGrowth;
