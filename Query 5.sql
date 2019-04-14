@@ -26,7 +26,7 @@ CREATE SQL SECURITY INVOKER VIEW PercentageGrowth
                 WHERE SaleDate BETWEEN '2018-05-00' AND '2040-00-00' 
                 GROUP BY DATE_FORMAT(SalesTemp.Month, "%Y-%m")
                 LIMIT 1)) * 100, 2), "%") AS Growth
-        FROM Sales, SalesTemp 
+        FROM Sales, SalesTemp #asdadsasd
 		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m");
     
 SELECT * FROM PercentageGrowth;
