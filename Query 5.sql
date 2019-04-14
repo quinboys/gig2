@@ -3,3 +3,4 @@ CREATE VIEW MontlyGrowthStatistic AS
 SELECT *
 FROM Finance
 GROUP BY Finance.LogID;
+

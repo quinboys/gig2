@@ -4,3 +4,5 @@ SELECT Stock.SupplierID, Supplier.CompanyName, Stock.StockID,  Stock.StockType A
 FROM Stock, Supplier
 WHERE Stock.SupplierID = Supplier.SupplierID
 GROUP BY Stock.SupplierID, Supplier.CompanyName, Stock.StockID;
+
+SELECT * FROM SupplierStock;
