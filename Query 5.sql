@@ -21,6 +21,6 @@ AS
 	FROM Sales
     GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m");
     
-DROP TABLE SalesTemp;
+DROP VIEW SalesTemp;
     
 SELECT * FROM PercentageGrowth;
