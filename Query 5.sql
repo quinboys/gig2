@@ -19,7 +19,7 @@ CREATE SQL SECURITY INVOKER VIEW PercentageGrowth
 		SELECT 
 			DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month,
 			Sales.Total,
-			(CONCAT(ROUND((100 * Sales.Total / (SELECT SalesTemp.Total FROM SalesTemp)), 2), "%")) AS Growth
+			(CONCAT(ROUND((100 * (SELECT SalesTemp.Total FROM SalesTemp) / Sales.Total), 2), "%")) AS Growth
 		FROM Sales
 		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m");
     
