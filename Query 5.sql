@@ -8,7 +8,7 @@ CREATE SQL SECURITY INVOKER VIEW SalesTemp
 			Sales.SaleID,
 			Sales.Total
 		FROM Sales
-        WHERE SaleDate BETWEEN '2018-05-00 00:00:00' AND '2040-00-00 00:00:00'
+        WHERE SaleDate BETWEEN '2018-05-00' AND '2040-00-00'
 		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m"); 
 
 SELECT * FROM SalesTemp;
