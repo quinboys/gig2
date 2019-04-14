@@ -8,7 +8,6 @@ CREATE SQL SECURITY INVOKER VIEW SalesTemp
 			Sales.SaleID,
 			Sales.Total
 		FROM Sales
-		WHERE SaleID > 1
 		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m"); 
 
 SELECT * FROM SalesTemp;
@@ -23,6 +22,9 @@ CREATE SQL SECURITY INVOKER VIEW PercentageGrowth
 		FROM Sales
 		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m");
     
+SELECT * FROM PercentageGrowth;
+
+DROP VIEW PercentageGrowth;
 DROP VIEW SalesTemp;
     
-SELECT * FROM PercentageGrowth;
+
