@@ -2,8 +2,6 @@ DROP DATABASE Data_Mart;
 CREATE DATABASE Data_Mart;
 USE Data_Mart;
 
-#asdasdasd
-
 create table Payment (
 	PaymentID INT,
 	PaymentType VARCHAR(50),
