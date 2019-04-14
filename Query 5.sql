@@ -1,13 +1,16 @@
 /*5. (View) - Display the growth in sales (as a percentage) for your business, from the 1st month of opening until the end of the year. */
 
+DEFINER=`<Some_user>`@`<Some_host_or_IP>` SQL SECURITY DEFINER VIEW;
+
+Grant "b17nicsv"@"wwwlab.iit.his.se";
 DROP VIEW IF EXISTS SalesTemp;
 CREATE VIEW SalesTemp
 	AS
 		SELECT 
 			SaleID,
-            Total
+			Total
 		FROM Sales
-        WHERE SaleID > 1;
+		WHERE SaleID > 1;
 
 SELECT * FROM SalesTemp;
 
