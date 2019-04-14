@@ -196,7 +196,7 @@ insert into Returns values (9, 24, '2018-11-27');
 insert into Returns values (10, 16, '2019-02-07');
 
 
-create table Finance (
+create table Finance /* !FIXME */ (
 	LogID INT,
 	Month VARCHAR(50),
 	Income VARCHAR(50),
