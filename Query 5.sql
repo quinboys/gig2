@@ -6,7 +6,7 @@ AS
 	SELECT 
 		DATE_FORMAT(SaleDate, "%Y-%m") as Month,
         Total,
-		Total - (SELECT Total FROM Sales prev WHERE prev.Total < Total) AS Percentage
+		Total / (SELECT Total FROM Sales prev WHERE prev.Total < Total) AS Percentage
 	FROM Sales;
       
       
