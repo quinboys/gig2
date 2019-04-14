@@ -4,10 +4,12 @@ DROP VIEW IF EXISTS SalesTemp;
 CREATE SQL SECURITY INVOKER VIEW SalesTemp
 	AS
 		SELECT 
-			SaleID,
-			Total
+			DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month,
+			Sales.SaleID,
+			Sales.Total
 		FROM Sales
-		WHERE SaleID > 1;
+		WHERE SaleID > 1
+		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m"); 
 
 SELECT * FROM SalesTemp;
 
