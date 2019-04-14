@@ -198,26 +198,3 @@ insert into Returns values (7, 19, '2018-12-25');
 insert into Returns values (8, 14, '2018-12-01');
 insert into Returns values (9, 24, '2018-11-27');
 insert into Returns values (10, 16, '2019-02-07');
-
-
-create table Finance /* !FIXME  */ (
-	LogID INT,
-	Month VARCHAR(50),
-	Income VARCHAR(50),
-	Growth VARCHAR(50),
-    CONSTRAINT FINANCE_PRIMARY_KEY PRIMARY KEY (LogID)
-);
-
-insert into Finance values (1, '2018-03', '2850', '100%');
-insert into Finance values (2, '2018-04', '4741.54', '66.3%');
-insert into Finance values (3, '2018-05', '5327.90', '12.3%');
-insert into Finance values (4, '2018-06', '2394.07', '-55.06%');
-insert into Finance values (5, '2018-07', '3875.64', '61.8%');
-insert into Finance values (6, '2018-08', '1030.54', '-73.4%');
-insert into Finance values (7, '2018-09', '1831.34', '77.7%');
-insert into Finance values (8, '2018-10', '2024.90', '10.5%');
-insert into Finance values (9, '2018-11', '1365.51', '-32.5%');
-insert into Finance values (10, '2018-12', '1907.73', '39.7%');
-insert into Finance values (11, '2019-01', '0', '-100%');
-insert into Finance values (12, '2019-02', '620.86', '100%');
-insert into Finance values (13, '2019-03', '5368.86', '764.74%');
