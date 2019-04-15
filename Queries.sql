@@ -28,7 +28,6 @@ insert into Sales values (47, 2, 1, 4, '2018-10-27', 1000, '2.74', '176.56');
 
 SELECT * FROM Stock WHERE StockID = 1 ;
 
-
 /*3. (View) - Create a View of all stock (grouped by the supplier) */
 CREATE VIEW SupplierStock
 	AS
@@ -36,6 +35,8 @@ CREATE VIEW SupplierStock
 		FROM Stock, Supplier
 		WHERE Stock.SupplierID = Supplier.SupplierID
 		GROUP BY Stock.SupplierID, Supplier.CompanyName, Stock.StockID;
+        
+SELECT * FROM SupplierStock;
 
 /*4. (Stored Procedure) - Detail and total all sales for the year, group these by each month. (A Group By with RollUp) */
 DELIMITER //
@@ -68,7 +69,6 @@ CREATE VIEW PercentageSalesGrowth
 SELECT * FROM PercentageSalesGrowth;
 
 */
-
 
 /*6. (Stored Procedure) - Create a stored procedure that will display all orders by customer and their county. */
 DELIMITER //
@@ -151,16 +151,12 @@ CREATE VIEW SalesPerMonth
 		FROM Sales
 		GROUP BY DATE_FORMAT(SaleDate, "%Y-%m");
 
-SELECT * FROM SalesPerMonth;
-
 DROP VIEW IF EXISTS ReturnsPerMonth;
 CREATE VIEW ReturnsPerMonth
 	AS
 		SELECT DATE_FORMAT(Date, "%Y-%m") AS Month, COUNT(ReturnID) AS Total_Returns
 		FROM Returns
 		GROUP BY DATE_FORMAT(Date, "%Y-%m");
-
-SELECT * FROM ReturnsPerMonth;
 
 DROP VIEW IF EXISTS ProfitByMonth;
 CREATE VIEW ProfitByMonth 

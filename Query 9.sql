@@ -1,8 +1,8 @@
 /*9. (Trigger) - Create a Trigger that will populate a ‘history table’ once a customers contact details have been updated. */
 DELIMITER $$
-DROP TRIGGER History_update;
+DROP TRIGGER IF EXISTS History_update;
 CREATE TRIGGER History_update
-    BEFORE UPDATE ON Customer
+    AFTER UPDATE ON Customer
     FOR EACH ROW
     BEGIN
 
