@@ -47,11 +47,24 @@ DELIMITER ;
 
 CALL MonthlySales();
 
-/*5. (View) - Display the growth in sales (as a percentage) for your business, from the 1st month of opening until the end of the year. */
-CREATE VIEW MontlyGrowthStatistic AS
-SELECT *
-FROM Finance
-GROUP BY Finance.LogID;
+
+/*
+#5. (View) - Display the growth in sales (as a percentage) for your business, from the 1st month of opening until the end of the year. 
+DROP VIEW IF EXISTS PercentageSalesGrowth;
+CREATE VIEW PercentageSalesGrowth 
+    AS 
+        SELECT Month,
+			SUM(Total) AS TotalPerMonth,
+            CONCAT(CAST(ROUND(COALESCE( 100 * (TotalPerMonth-LAG(TotalPerMonth) OVER (ORDER BY 'Month' ASC)) / LAG(TotalPerMonth) 
+            OVER (ORDER BY 'Month' ASC), 0), 2) AS CHAR), '%') 'Percent Change',
+            ROUND(TotalPerMonth, 2) AS "Total Sales In Month" FROM (SELECT DATE_FORMAT(SaleDate, "%Y-%m") AS Month
+			FROM SALES 
+        GROUP BY DATE_FORMAT(SaleDate, "%Y-%m")) SALES;
+
+# Test code 
+SELECT * FROM PercentageSalesGrowth;
+
+*/
 
 
 /*6. (Stored Procedure) - Create a stored procedure that will display all orders by customer and their county. */
@@ -129,8 +142,31 @@ SELECT * FROM Customer;
 */
 
 /*10. (View) - Create a View that will display a breakdown of (a) sales (b) profit and (c) returns for each month of the year. */
-CREATE VIEW ProfitByMonths AS
-SELECT DATE_FORMAT(SaleDate, "%Y-%m"), Sales.SaleID, Customer.CustomerName, Stock.StockType, Sales.Quantity, Sales.Total
-FROM Sales, Customer, Stock
-WHERE Sales.CustomerID = Customer.CustomerID AND Sales.StockID = Stock.StockID
-GROUP BY DATE_FORMAT(SaleDate, "%Y-%m"), Sales.SaleID;
+DROP VIEW IF EXISTS SalesPerMonth;
+CREATE VIEW SalesPerMonth AS
+SELECT DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month, COUNT(Sales.SaleID) AS Total_Sales,
+Round(SUM(Sales.Total),2) AS TotalRevenueForMonth
+FROM Sales
+GROUP BY DATE_FORMAT(SaleDate, "%Y-%m");
+
+SELECT * FROM SalesPerMonth;
+
+DROP VIEW IF EXISTS ReturnsPerMonth;
+CREATE VIEW ReturnsPerMonth AS
+SELECT DATE_FORMAT(Date, "%Y-%m") AS Month, COUNT(ReturnID) AS Total_Returns
+FROM Returns
+GROUP BY DATE_FORMAT(Date, "%Y-%m");
+
+SELECT * FROM ReturnsPerMonth;
+
+DROP VIEW IF EXISTS ProfitByMonth;
+CREATE VIEW ProfitByMonth AS
+SELECT SalesPerMonth.Month, SalesPerMonth.Total_Sales AS Sales, SalesPerMonth.TotalRevenueForMonth, ReturnsPerMonth.Total_Returns
+FROM SalesPerMonth
+	LEFT JOIN ReturnsPerMonth
+		ON SalesPerMonth.Month = ReturnsPerMonth.Month
+ORDER BY SalesPerMonth.Month ASC 
+;
+    
+    
+SELECT * FROM ProfitByMonth;
