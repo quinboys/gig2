@@ -6,7 +6,7 @@ CREATE VIEW SalesTemp
 		SELECT 
 			DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month,
 			Sales.SaleID,
-			Sales.Total
+			Sales.Total 
 		FROM Sales
         WHERE SaleDate BETWEEN '2018-04-00' AND '2040-00-00' 
 		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m"); 
@@ -20,7 +20,8 @@ CREATE VIEW PercentageGrowth
 			DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month,
 			Sales.SaleID,
             Sales.Total,
-			CONCAT(ROUND(((Sales.Total) - SalesTemp.Total) / (SELECT SalesTemp.Total FROM SalesTemp GROUP BY DATE_FORMAT(SalesTemp.Month, "%Y-%m")) * 100, 2), "%") AS Growth
+			#CONCAT(ROUND((((Sales.Total) - SalesTemp.Total) / (SELECT SalesTemp.Total FROM SalesTemp GROUP BY DATE_FORMAT(SalesTemp.Month, "%Y-%m"))) * 100, 2), "%") AS Growth
+            CONCAT(ROUND((((SELECT Sales.Total FROM Sales WHERE DATE_FORMAT(Sales.SaleDate, "%Y-%m") IN (SELECT DATE_FORMAT(Sales.SaleDate, "%Y-%m") + 1 FROM Sales WHERE DATE_FORMAT(Sales.SaleDate, "2018-05"))) - SalesTemp.Total) / (SalesTemp.Total)) * 100, 2), "%") AS Growth
         FROM Sales, SalesTemp
 		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m");
     
