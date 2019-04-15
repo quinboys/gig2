@@ -5,7 +5,6 @@ SELECT DATE_FORMAT(SaleDate, "%Y-%m") as Month , Sales.SaleID, Customer.Customer
 FROM Sales, Customer, Stock
 WHERE Sales.CustomerID = Customer.CustomerID AND Sales.StockID = Stock.StockID
 GROUP BY DATE_FORMAT(SaleDate, "%Y-%m"), Sales.SaleID;
-
 SELECT * FROM ProfitByMonth;*/
 
 DROP VIEW IF EXISTS SalesPerMonth;
@@ -31,7 +30,7 @@ SELECT SalesPerMonth.Month, SalesPerMonth.Total_Sales AS Sales, SalesPerMonth.To
 FROM SalesPerMonth
 	LEFT JOIN ReturnsPerMonth
 		ON SalesPerMonth.Month = ReturnsPerMonth.Month
-#ROUP BY DATE_FORMAT(Sales, "%Y %m")
+ORDER BY SalesPerMonth.Month ASC 
 ;
     
     
@@ -43,7 +42,5 @@ SELECT * FROM Sales2;
 CREATE VIEW WeeklyStatistic AS
 SELECT * FROM Sales 
 WHERE SaleDate between CAST('2018-04-01' AS DATE) and CAST('2018-04-30' AS DATE);
-
 SELECT * FROM WeeklyStatistic;
-
 SELECT * FROM Sales;*/
