@@ -27,13 +27,15 @@ SELECT * FROM ReturnsPerMonth;
 
 DROP VIEW IF EXISTS Sales2;
 CREATE VIEW Sales2 AS
-SELECT SalesPerMonth.Month, SalesPerMonth.Total_Sales AS Sales, SalesPerMonth.TotalRevenueForMonth
-FROM Sales
-/*GROUP BY DATE_FORMAT(SaleDate, "%Y, %m")*/
-	LEFT JOIN SalesPerMonth
-		ON ReturnsPerMonth.Month = SalesPerMonth.Month;
-	
-
+SELECT SalesPerMonth.Month, SalesPerMonth.Total_Sales AS Sales, SalesPerMonth.TotalRevenueForMonth, ReturnsPerMonth.Total_Returns
+FROM SalesPerMonth
+	LEFT JOIN ReturnsPerMonth
+		ON SalesPerMonth.Month = ReturnsPerMonth.Month
+#ROUP BY DATE_FORMAT(Sales, "%Y %m")
+;
+    
+    
+SELECT * FROM Sales2;
 
 #SELECT * FROM Returns;
 
