@@ -13,7 +13,8 @@ DROP VIEW IF EXISTS SalesTemp;
 CREATE VIEW SalesTemp 
 	AS
 		SELECT TempView.Month, TempView.Total
-        FROM TempView, Sales
+        FROM TempView
+        JOIN Sales ON TempView.Month=DATE_FORMAT(SaleDate,"%Y-%m")
         GROUP BY TempView.Month ASC;
         
 SELECT * FROM SalesTemp;
