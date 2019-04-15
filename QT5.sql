@@ -1,33 +1,19 @@
-/*5. (View) - Display the growth in sales (as a percentage) for your business, from the 1st month of opening until the end of the year. */
+
+
+DROP VIEW IF EXISTS TempView;
+CREATE VIEW TempView 
+	AS
+		SELECT DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month, ROUND(SUM(Sales.Total), 2) AS Total
+        FROM Sales
+        GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m") ASC;
+        
+SELECT * FROM TempView;
 
 DROP VIEW IF EXISTS SalesTemp;
-CREATE VIEW SalesTemp
+CREATE VIEW SalesTemp 
 	AS
-		SELECT 
-			DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month,
-			Sales.SaleID,
-			Sales.Total 
-		FROM Sales
-        WHERE SaleDate BETWEEN '2018-04-00' AND '2040-00-00' 
-		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m"); 
-
+		SELECT TempView.Month, TempView.Total
+        FROM TempView, Sales
+        GROUP BY DATE_FORMAT(TempView.Month, "%Y-%m") ASC;
+        
 SELECT * FROM SalesTemp;
-
-DROP VIEW IF EXISTS PercentageGrowth;
-CREATE VIEW PercentageGrowth 
-	AS
-		SELECT 
-			DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month,
-			Sales.SaleID,
-            Sales.Total,
-			#CONCAT(ROUND((((Sales.Total) - SalesTemp.Total) / (SELECT SalesTemp.Total FROM SalesTemp GROUP BY DATE_FORMAT(SalesTemp.Month, "%Y-%m"))) * 100, 2), "%") AS Growth
-            CONCAT(ROUND((((SELECT Sales.Total FROM Sales WHERE DATE_FORMAT(Sales.SaleDate, "%Y-%m") IN (SELECT DATE_FORMAT(Sales.SaleDate, "%Y-%m") + 1 FROM Sales WHERE DATE_FORMAT(Sales.SaleDate, "2018-05"))) - SalesTemp.Total) / (SalesTemp.Total)) * 100, 2), "%") AS Growth
-        FROM Sales, SalesTemp
-		GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m");
-    
-SELECT * FROM PercentageGrowth;
-
-DROP VIEW PercentageGrowth;
-DROP VIEW SalesTemp;
-    
-
