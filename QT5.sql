@@ -14,6 +14,6 @@ CREATE VIEW SalesTemp
 	AS
 		SELECT TempView.Month, TempView.Total
         FROM TempView, Sales
-        GROUP BY DATE_FORMAT(TempView.Month, "%Y-%m") ASC;
+        GROUP BY TempView.Month ASC;
         
 SELECT * FROM SalesTemp;
