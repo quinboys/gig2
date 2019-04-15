@@ -1,10 +1,14 @@
 /*1. (View) - Show all transactions for ANY given week (you decide the dates). */
-CREATE VIEW WeeklyStatistic AS
-SELECT * FROM Sales 
-WHERE SaleDate between CAST('2019-03-11' AS DATE) and CAST('2019-03-18' AS DATE);
+CREATE VIEW WeeklyStatistic 
+	AS
+		SELECT * FROM Sales 
+		WHERE SaleDate between CAST('2019-03-11' AS DATE) and CAST('2019-03-18' AS DATE);
+
+SELECT * FROM WeeklyStatistic;
 
 /*2. (Trigger) - Create a Trigger that updates stock levels once a sale takes place. */
 DELIMITER $$
+DROP TRIGGER IF EXISTS Stock_update;
 CREATE TRIGGER Stock_update
     BEFORE INSERT ON Sales
     FOR EACH ROW
@@ -17,21 +21,21 @@ END$$
 DELIMITER ;
 
 /*Below is the code to test if the StockLevels_update trigger is working.*/
-/*
+
 SELECT * FROM Stock WHERE StockID = 1;
 
 insert into Sales values (47, 2, 1, 4, '2018-10-27', 1000, '2.74', '176.56');
 
 SELECT * FROM Stock WHERE StockID = 1 ;
-*/
+
 
 /*3. (View) - Create a View of all stock (grouped by the supplier) */
-CREATE VIEW SupplierStock AS
-SELECT Stock.SupplierID, Supplier.CompanyName, Stock.StockID,  Stock.StockType AS Product
-FROM Stock, Supplier
-WHERE Stock.SupplierID = Supplier.SupplierID
-GROUP BY Stock.SupplierID, Supplier.CompanyName, Stock.StockID;
-
+CREATE VIEW SupplierStock
+	AS
+		SELECT Stock.SupplierID, Supplier.CompanyName, Stock.StockID,  Stock.StockType AS Product
+		FROM Stock, Supplier
+		WHERE Stock.SupplierID = Supplier.SupplierID
+		GROUP BY Stock.SupplierID, Supplier.CompanyName, Stock.StockID;
 
 /*4. (Stored Procedure) - Detail and total all sales for the year, group these by each month. (A Group By with RollUp) */
 DELIMITER //
@@ -46,7 +50,6 @@ END //
 DELIMITER ;
 
 CALL MonthlySales();
-
 
 /*
 #5. (View) - Display the growth in sales (as a percentage) for your business, from the 1st month of opening until the end of the year. 
@@ -107,9 +110,9 @@ DELIMITER ;
 
 CALL CustomerDetails(4);
 
-
 /*9. (Trigger) - Create a Trigger that will populate a ‘history table’ once a customers contact details have been updated. */
 DELIMITER $$
+DROP TRIGGER IF EXISTS History_update;
 CREATE TRIGGER History_update
     AFTER UPDATE ON Customer
     FOR EACH ROW
@@ -123,7 +126,7 @@ CREATE TRIGGER History_update
 END$$
 DELIMITER ;
 
-/* TRIGGER TEST CODE
+/* TRIGGER TEST CODE */
 
 SELECT * FROM History;
 SELECT * FROM Customer;
@@ -139,34 +142,33 @@ where CustomerID = 1;
 SELECT * FROM History;
 SELECT * FROM Customer;
 
-*/
-
 /*10. (View) - Create a View that will display a breakdown of (a) sales (b) profit and (c) returns for each month of the year. */
 DROP VIEW IF EXISTS SalesPerMonth;
-CREATE VIEW SalesPerMonth AS
-SELECT DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month, COUNT(Sales.SaleID) AS Total_Sales,
-Round(SUM(Sales.Total),2) AS TotalRevenueForMonth
-FROM Sales
-GROUP BY DATE_FORMAT(SaleDate, "%Y-%m");
+CREATE VIEW SalesPerMonth 
+	AS
+		SELECT DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month, COUNT(Sales.SaleID) AS Total_Sales,
+		Round(SUM(Sales.Total),2) AS TotalRevenueForMonth
+		FROM Sales
+		GROUP BY DATE_FORMAT(SaleDate, "%Y-%m");
 
 SELECT * FROM SalesPerMonth;
 
 DROP VIEW IF EXISTS ReturnsPerMonth;
-CREATE VIEW ReturnsPerMonth AS
-SELECT DATE_FORMAT(Date, "%Y-%m") AS Month, COUNT(ReturnID) AS Total_Returns
-FROM Returns
-GROUP BY DATE_FORMAT(Date, "%Y-%m");
+CREATE VIEW ReturnsPerMonth
+	AS
+		SELECT DATE_FORMAT(Date, "%Y-%m") AS Month, COUNT(ReturnID) AS Total_Returns
+		FROM Returns
+		GROUP BY DATE_FORMAT(Date, "%Y-%m");
 
 SELECT * FROM ReturnsPerMonth;
 
 DROP VIEW IF EXISTS ProfitByMonth;
-CREATE VIEW ProfitByMonth AS
-SELECT SalesPerMonth.Month, SalesPerMonth.Total_Sales AS Sales, SalesPerMonth.TotalRevenueForMonth, ReturnsPerMonth.Total_Returns
-FROM SalesPerMonth
-	LEFT JOIN ReturnsPerMonth
-		ON SalesPerMonth.Month = ReturnsPerMonth.Month
-ORDER BY SalesPerMonth.Month ASC 
-;
-    
+CREATE VIEW ProfitByMonth 
+	AS
+		SELECT SalesPerMonth.Month, SalesPerMonth.Total_Sales AS Sales, SalesPerMonth.TotalRevenueForMonth, ReturnsPerMonth.Total_Returns
+			FROM SalesPerMonth
+				LEFT JOIN ReturnsPerMonth
+				ON SalesPerMonth.Month = ReturnsPerMonth.Month
+			ORDER BY SalesPerMonth.Month ASC;    
     
 SELECT * FROM ProfitByMonth;

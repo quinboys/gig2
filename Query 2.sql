@@ -1,8 +1,8 @@
 /*2. (Trigger) - Create a Trigger that updates stock levels once a sale takes place. */
 DELIMITER $$
-DROP TRIGGER Stock_update;
+DROP TRIGGER IF EXISTS Stock_update;
 CREATE TRIGGER Stock_update
-    AFTER INSERT ON Sales
+    BEFORE INSERT ON Sales
     FOR EACH ROW
     BEGIN
 

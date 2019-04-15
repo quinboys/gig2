@@ -3,7 +3,7 @@ DELIMITER //
 CREATE PROCEDURE Returns
 ()
 BEGIN
-  SELECT DATE_FORMAT(Date, "%Y-%m") AS Month, Returns.ReturnID, Returns.SaleID, Customer.CustomerName, Stock.StockType 
+  SELECT DATE_FORMAT(Date, "%Y-%m"), Returns.ReturnID, Returns.SaleID, Customer.CustomerName, Stock.StockType 
   FROM Returns, Sales, Customer, Stock
   WHERE Returns.SaleID = Sales.SaleID AND Sales.CustomerID = Customer.CustomerID AND Sales.StockID = Stock.StockID
   GROUP BY DATE_FORMAT(Date, "%Y-%m"), ReturnID;
