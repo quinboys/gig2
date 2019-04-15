@@ -1,20 +1,12 @@
+DROP VIEW IF EXISTS PercentageSalesGrowth;
+CREATE VIEW PercentageSalesGrowth 
+	AS 
+		SELECT 
+			SUM(Total) AS TotalPerMonth,
+			ROUND(TotalPerMonth, 2) AS "Total Sales In Month",
+            CONCAT(CAST(ROUND(COALESCE( 100 * (TotalPerMonth-LAG(TotalPerMonth) WHERE (ORDER BY 'Month' ASC)) / LAG(TotalPerMonth) OVER (ORDER BY 'Month' ASC), 0), 2) AS CHAR), '%') 'Percent Change'
+        FROM SALES 
+        GROUP BY DATE_FORMAT(SaleDate, "%Y-%m")) SALES;
 
-
-DROP VIEW IF EXISTS TempView;
-CREATE VIEW TempView 
-	AS
-		SELECT DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month, ROUND(SUM(Sales.Total), 2) AS Total
-        FROM Sales
-        GROUP BY DATE_FORMAT(Sales.SaleDate, "%Y-%m") ASC;
-        
-SELECT * FROM TempView;
-
-DROP VIEW IF EXISTS SalesTemp;
-CREATE VIEW SalesTemp 
-	AS
-		SELECT TempView.Month, TempView.Total
-        FROM TempView
-        JOIN Sales ON TempView.Month=DATE_FORMAT(SaleDate,"%Y-%m")
-        GROUP BY TempView.Month ASC;
-        
-SELECT * FROM SalesTemp;
+/* Test code */ 
+SELECT * FROM PercentageSalesGrowth;
