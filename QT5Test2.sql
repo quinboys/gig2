@@ -9,19 +9,6 @@ CREATE VIEW TempView
         
 SELECT * FROM TempView;
 
-/*DROP VIEW IF EXISTS SalesTemp;
-CREATE SQL SECURITY INVOKER VIEW SalesTemp
-	AS
-		SELECT 
-			DATE_FORMAT(Sales.SaleDate, "%Y-%m") AS Month,
-			Sales.SaleID,
-			TempView.Total
-		FROM TempView, Sales
-        WHERE SaleDate BETWEEN '2018-04-00' AND '2040-00-00'
-		ORDER BY Sales.SaleDate; 
-
-SELECT * FROM SalesTemp;*/
-
 DROP VIEW IF EXISTS PercentageGrowth;
 CREATE SQL SECURITY INVOKER VIEW PercentageGrowth 
 	AS
